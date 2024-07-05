@@ -1,0 +1,26 @@
+# VSCode
+.vscode/
+
+# Node.js (web and api)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Angular specific
+web/.angular/cache/
+web/dist/
+web/.angular/
+
+# Backend specific
+api/node_modules/
+api/npm-debug.log*
+api/yarn-debug.log*
+api/yarn-error.log*
+
+# Sequelize files
+api/.sequelize/*
+
+# Environment variables
+.env
+api/.env
