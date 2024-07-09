@@ -7,9 +7,10 @@ const authController = require('../controllers/auth');
  * /auth/register:
  *  post:
  *   description: Register a new user
- *   parameters:
- *    - in: body
- *      name: user
+ *   requestBody:
+ *    required: true
+ *    content:
+ *     application/json:
  *      schema:
  *       type: object
  *       required:
