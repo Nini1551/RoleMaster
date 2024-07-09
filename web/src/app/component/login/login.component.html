@@ -1,1 +1,26 @@
-<p>login works!</p>
+<div class='div'>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="email">Adresse e-mail</label>
+      <input type="email" id="email" formControlName="email">
+      <!--<div *ngIf="submitted && f.email.errors">
+        <div *ngIf="f.email.errors.required">L'adresse e-mail est requise.</div>
+        <div *ngIf="f.email.errors.emailInvalid">L'adresse e-mail est invalide.</div>
+      </div>-->
+    </div>
+  
+    <div>
+      <label for="password">Mot de passe</label>
+      <input type="password" id="password" formControlName="password">
+     <!-- <div *ngIf="submitted && f.password.errors">
+        <div *ngIf="f.password.errors.required">Le mot de passe est requis.</div>
+        <div *ngIf="f.password.errors.minlength">Le mot de passe doit contenir au moins huit caractères.</div>
+        <div *ngIf="f.password.errors.passwordInvalid">Le mot de passe doit contenir une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial.</div>
+      </div> -->
+    </div>
+  
+    
+  
+    <button type="submit">Connexion</button>
+  </form>
+  </div>
