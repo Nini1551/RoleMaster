@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../service/auth.service';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
+import { AuthService } from '../../service/auth.service';
 import { User } from '../../../type';
 
 @Component({
