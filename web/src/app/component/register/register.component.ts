@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, 
 import { CommonModule } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
 import { AuthService } from '../../service/auth.service';
+import { User } from '../../../type';
 
 @Component({
   selector: 'app-register',
@@ -12,21 +13,19 @@ import { AuthService } from '../../service/auth.service';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent {
-  registerForm: FormGroup;
+  registerForm!: FormGroup;
   submitted = false;
   usernames: string[] = [];
   emails: string[] = [];
+
+  // Base de l'utilisateur, initialisé à des valeurs vides
+  user: User = {
+    username: '',
+    email: '',
+    password: ''
+  };
   
-  constructor(private formBuilder: FormBuilder, private auth: AuthService) {
-    this.registerForm = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.minLength(3), this.noWhitespaceValidator]],
-      email: ['', [Validators.required, Validators.email, this.emailValidator]],
-      password: ['', [Validators.required, Validators.minLength(8), this.passwordValidator]],
-      confirmPassword: ['', Validators.required]
-    }, {
-      validator: this.mustMatch('password', 'confirmPassword')
-    });
-  }
+  constructor(private formBuilder: FormBuilder, private auth: AuthService) { }
   
   ngOnInit() {
     this.auth.getUsers().subscribe(
@@ -36,6 +35,15 @@ export class RegisterComponent {
       },
       (error) => {console.log(error)}
     );
+
+    this.registerForm = this.formBuilder.group({
+      username: ['', [Validators.required, Validators.minLength(3), this.noWhitespaceValidator]],
+      email: ['', [Validators.required, Validators.email, this.emailValidator]],
+      password: ['', [Validators.required, Validators.minLength(8), this.passwordValidator]],
+      confirmPassword: ['', Validators.required]
+    }, {
+      validator: this.mustMatch('password', 'confirmPassword')
+    });
   }
 
   get f() { return this.registerForm.controls; }
@@ -47,7 +55,22 @@ export class RegisterComponent {
       return;
     }
 
-    // Handle valid form submission here
+    console.log('Here');
+
+    // Mise à jour des données de l'utilisateur
+    this.user.username = this.registerForm.value.username;
+    this.user.email = this.registerForm.value.email;
+    this.user.password = this.registerForm.value.password;
+
+    // Envoi des données de l'utilisateur au serveur
+    this.auth.register(this.user).subscribe(
+      (response: HttpResponse<any>) => {
+        console.log(response);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   noWhitespaceValidator(control: AbstractControl): ValidationErrors | null {
