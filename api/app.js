@@ -18,6 +18,7 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/', homeRoutes);
 app.use('/auth', authRoutes);
 
+
 sequelize.sync({ force: true })
 .then(() => console.log('Database synced'))
 .catch(err => console.error('Unable to sync database:', err));

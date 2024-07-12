@@ -48,4 +48,34 @@ router.post('/register', authController.registerUser);
  */
 router.get('/users', authController.getUsers);
 
+
+/**
+ * @swagger
+ * /auth/login:
+ *  post:
+ *   description: Check if email exists, if true compare password(hashed), else return unvalid data.
+ *   requestBody:
+ *    required: true
+ *    content:
+ *     application/json:
+ *      schema:
+ *       type: object
+ *       required:
+ *        - email
+ *        - password
+ *       properties:
+ *        email:
+ *         type: string
+ *         example: john.doe@example.com
+ *        password:
+ *         type: string
+ *         example: John_Doe123
+ *   responses:
+ *    200:   
+ *     description: Success login in
+ *    500:
+ *     description: Error Logging in
+ */
+router.post('/login', authController.loginUser);
+
 module.exports = router;
