@@ -5,6 +5,7 @@ import { HttpResponse } from '@angular/common/http';
 import { AuthService } from '../../service/auth.service';
 import { User } from '../../../type';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -27,7 +28,7 @@ export class RegisterComponent implements OnInit, OnDestroy{
     password: ''
   };
   
-  constructor(private formBuilder: FormBuilder, private auth: AuthService) {
+  constructor(private formBuilder: FormBuilder, private auth: AuthService, private router: Router) {
     this.initializeForm();
    }
   
@@ -87,6 +88,8 @@ export class RegisterComponent implements OnInit, OnDestroy{
     this.auth.register(this.user).subscribe({
       next: (response: HttpResponse<any>) => {
         console.log('Registration successful', response);
+        this.router.navigate(['/login']);
+
       },
       error: (error) => {
         console.error('Registration error', error);
