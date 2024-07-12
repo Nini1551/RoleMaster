@@ -15,7 +15,6 @@
       <input type="email" id="email" formControlName="email">
       <div class='unvalid' *ngIf="submitted && registerForm.get('email')?.errors">
         <div *ngIf="registerForm.get('email')?.errors?.['required']"><small>L'adresse e-mail est requise.</small></div>
-        <div *ngIf="registerForm.get('email')?.errors?.['email']"><small>Veuillez entrer une adresse e-mail valide.</small></div>
         <div *ngIf="registerForm.get('email')?.errors?.['emailInvalid']"><small>L'adresse e-mail n'est pas dans un format valide.</small></div>
         <div *ngIf="registerForm.get('email')?.errors?.['emailTaken']"><small>L'adresse e-mail est déjà utilisée.</small></div>
       </div>
