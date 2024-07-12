@@ -5,8 +5,7 @@
       <input type="text" id="username" formControlName="username">
       <div class='unvalid' *ngIf="submitted && registerForm.get('username')?.errors">
         <div *ngIf="registerForm.get('username')?.errors?.['required']"><small>Le pseudonyme est requis.</small></div>
-        <div *ngIf="registerForm.get('username')?.errors?.['minlength']"><small>Le pseudonyme doit contenir au moins 3 caractères.</small></div>
-        <div *ngIf="registerForm.get('username')?.errors?.['whitespace']"><small>Le pseudonyme ne doit pas contenir d'espaces.</small></div>
+        <div *ngIf="registerForm.get('username')?.errors?.['whitespaceOrMinLength']"><small>Le pseudonyme ne doit pas contenir d'espaces et doit contenir au moins 3 caractères.</small></div>
         <div *ngIf="registerForm.get('username')?.errors?.['usernameTaken']"><small>Ce pseudonyme est déjà pris.</small></div>
       </div>
     </div>

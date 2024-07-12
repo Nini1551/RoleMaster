@@ -55,7 +55,7 @@ export class RegisterComponent implements OnInit, OnDestroy{
 
   initializeForm(){
     this.registerForm = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.minLength(3), this.noWhitespaceValidator.bind(this), this.uniqueUsernameValidator.bind(this)]],
+      username: ['', [Validators.required, this.noWhitespaceAndLengthValidator.bind(this), this.uniqueUsernameValidator.bind(this)]],
       email: ['', [Validators.required, Validators.email, this.emailValidator.bind(this), this.uniqueEmailValidator.bind(this)]],
       password: ['', [Validators.required, this.passwordValidator.bind(this)]],
       confirmPassword: ['', Validators.required]
@@ -85,7 +85,7 @@ export class RegisterComponent implements OnInit, OnDestroy{
 
     // Envoi des données de l'utilisateur au serveur
     this.auth.register(this.user).subscribe({
-      next: (response) => {
+      next: (response: HttpResponse<any>) => {
         console.log('Registration successful', response);
       },
       error: (error) => {
@@ -94,9 +94,16 @@ export class RegisterComponent implements OnInit, OnDestroy{
     });
   }
 
-  noWhitespaceValidator(control: AbstractControl): ValidationErrors | null {
-    if (control.value && control.value.indexOf(' ') >= 0) {
-      return { whitespace: true };
+  noWhitespaceAndLengthValidator(control: AbstractControl): ValidationErrors | null {
+    if (control.value) {
+      // Vérifie si la valeur contient des espaces
+      const hasWhitespace = control.value.indexOf(' ') >= 0;
+      // Vérifie si la longueur de la valeur est inférieure à 3 caractères
+      const isTooShort = control.value.length < 3;
+  
+      if (hasWhitespace || isTooShort) {
+        return { whitespaceOrMinLength: true };
+      }
     }
     return null;
   }
