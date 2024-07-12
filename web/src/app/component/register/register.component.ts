@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, FormsModule, ReactiveFormsModule, AbstractControlOptions } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
 import { AuthService } from '../../service/auth.service';
 import { User } from '../../../type';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -12,43 +13,61 @@ import { User } from '../../../type';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit, OnDestroy{
   registerForm!: FormGroup;
   submitted = false;
   usernames: string[] = [];
   emails: string[] = [];
+  private subscription!: Subscription;
 
   // Base de l'utilisateur, initialisé à des valeurs vides
-  user: User = {
+  user: User = {  
     username: '',
     email: '',
     password: ''
   };
   
-  constructor(private formBuilder: FormBuilder, private auth: AuthService) { }
+  constructor(private formBuilder: FormBuilder, private auth: AuthService) {
+    this.initializeForm();
+   }
   
   ngOnInit() {
-    this.auth.getUsers().subscribe(
-      (data) => {
+    this.subscription = this.auth.getUsers().subscribe({
+      next: (data) => {
         this.usernames = data.map((user: any) => user.username);
         this.emails = data.map((user: any) => user.email);
       },
-      (error) => {console.log(error)}
-    );
+      error: (err) => {
+        console.error('Error fetching users', err);
+      },
+      complete: () => {
+        console.log('User data fetch complete');
+      }
+    });
+  }
 
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+
+  initializeForm(){
     this.registerForm = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.minLength(3), this.noWhitespaceValidator]],
-      email: ['', [Validators.required, Validators.email, this.emailValidator]],
-      password: ['', [Validators.required, Validators.minLength(8), this.passwordValidator]],
+      username: ['', [Validators.required, Validators.minLength(3), this.noWhitespaceValidator.bind(this), this.uniqueUsernameValidator.bind(this)]],
+      email: ['', [Validators.required, Validators.email, this.emailValidator.bind(this), this.uniqueEmailValidator.bind(this)]],
+      password: ['', [Validators.required, this.passwordValidator.bind(this)]],
       confirmPassword: ['', Validators.required]
     }, {
-      validator: this.mustMatch('password', 'confirmPassword')
-    });
+      validator: this.passwordMatchValidator.bind(this)
+    } as AbstractControlOptions);
+  
   }
 
   get f() { return this.registerForm.controls; }
 
-  onSubmit() {
+  onSubmit(): void {
     this.submitted = true;
 
     if (this.registerForm.invalid) {
@@ -58,19 +77,21 @@ export class RegisterComponent {
     console.log('Here');
 
     // Mise à jour des données de l'utilisateur
-    this.user.username = this.registerForm.value.username;
-    this.user.email = this.registerForm.value.email;
-    this.user.password = this.registerForm.value.password;
+    this.user = {
+      username: this.registerForm.value.username,
+      email: this.registerForm.value.email,
+      password: this.registerForm.value.password
+    }
 
     // Envoi des données de l'utilisateur au serveur
-    this.auth.register(this.user).subscribe(
-      (response: HttpResponse<any>) => {
-        console.log(response);
+    this.auth.register(this.user).subscribe({
+      next: (response) => {
+        console.log('Registration successful', response);
       },
-      (error) => {
-        console.log(error);
+      error: (error) => {
+        console.error('Registration error', error);
       }
-    );
+    });
   }
 
   noWhitespaceValidator(control: AbstractControl): ValidationErrors | null {
@@ -80,37 +101,52 @@ export class RegisterComponent {
     return null;
   }
 
+  uniqueUsernameValidator(control: AbstractControl): ValidationErrors | null {
+    const username = control.value;
+    const isUnique = this.usernames.indexOf(username) === -1;
+    return isUnique ? null : { 'usernameTaken': true };
+  }
+  
+
   emailValidator(control: AbstractControl): ValidationErrors | null {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (control.value && !emailRegex.test(control.value)) {
       return { emailInvalid: true };
     }
     return null;
+  } 
+
+  uniqueEmailValidator(control: AbstractControl) : ValidationErrors | null {
+    const email = control.value
+    const isUnique = this.emails.indexOf(email) === -1;
+    return isUnique ? null : { 'emailTaken': true };
   }
+
 
   passwordValidator(control: AbstractControl): ValidationErrors | null {
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    if (control.value && !passwordRegex.test(control.value)) {
-      return { passwordInvalid: true };
+    const value = control.value;
+
+    if (!value) {
+      return null;
     }
-    return null;
+
+    const hasMinLength = value.length >= 8;
+    const hasUpperCase = value.split('').some((char : string) => char >= 'A' && char <= 'Z');
+    const hasLowerCase = value.split('').some((char : string) => char >= 'a' && char <= 'z');
+    const hasNumeric = value.split('').some((char : string) => char >= '0' && char <= '9');
+    const hasSpecial = value.split('').some((char : string) => '!@#$%^&*(),.?":{}|<>'.includes(char));
+
+    const passwordValid = hasMinLength && hasUpperCase && hasLowerCase && hasNumeric && hasSpecial;
+
+    return !passwordValid ? { 'passwordInvalid': true } : null;
   }
 
-  mustMatch(password: string, confirmPassword: string) {
-    return (formGroup: FormGroup) => {
-      const passControl = formGroup.controls[password];
-      const confirmPassControl = formGroup.controls[confirmPassword];
+  passwordMatchValidator(group: AbstractControl): ValidationErrors | null {
+    const password = group.get('password')?.value;
+    const confirmPassword = group.get('confirmPassword')?.value;
 
-      if (confirmPassControl.errors && !confirmPassControl.errors['mustMatch']) {
-        return;
-      }
-
-      if (passControl.value !== confirmPassControl.value) {
-        confirmPassControl.setErrors({ mustMatch: true });
-      } else {
-        confirmPassControl.setErrors(null);
-      }
-    };
+    return password === confirmPassword ? null : { 'passwordMismatch': true };
   }
+
 
 }

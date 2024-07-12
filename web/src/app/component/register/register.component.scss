@@ -60,7 +60,9 @@
     margin-bottom: 15px;
   }
   
-  div *ngIf {
-    color: #d9534f; /* Red for error messages */
+  .unvalid {
+    display: flex;
+    color: red;
+    justify-content: center;
   }
   
