@@ -92,7 +92,13 @@ export class RegisterComponent implements OnInit, OnDestroy{
 
       },
       error: (error) => {
-        console.error('Registration error', error);
+        if (error.status === 500) {
+          alert('An error occurred. Please try again later.'); // En cas d'erreur d'enregistrement, une alerte est lancée
+          this.router.navigate(['/register']); //recharge ensuite la page d'enregistrement
+        }
+        else {
+          console.error('Registration error', error);
+        }
       }
     });
   }
