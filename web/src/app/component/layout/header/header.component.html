@@ -1,16 +1,18 @@
 <nav class="navbar">
   <div class="navbar-left">
     <a class="logo-button" href="/home">
-      <!-- AJOUTEZ LE LIEN VERS LE BON LOGOICI-->
       <img src="logo/logo.png" alt="Logo" class="logo">
-
     </a>
   </div>
   <div class="navbar-center">
     <h1 class="navbar-title">RoleMaster</h1>
   </div>
   <div class="navbar-right">
-    <a class="nav-button" href="/register">S'inscrire</a>
-    <a class="nav-button" href="/login">Se connecter</a>
+    <a class="nav-button" href="/register" *ngIf="!isAuthenticated">S'inscrire</a>
+    <a class="nav-button" href="/login" *ngIf="!isAuthenticated">Se connecter</a>
+    <div *ngIf="isAuthenticated">
+      <span class="pseudo">User : {{ username }}</span>
+      <button class="nav-button" (click)="logout()">Se déconnecter</button>
+    </div>
   </div>
 </nav>

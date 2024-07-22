@@ -1,1 +1,43 @@
-<p>register works!</p>
+<div class='div'>
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div class="input">
+      <label for="username">Pseudonyme</label>
+      <input type="text" id="username" formControlName="username">
+      <div class='unvalid' *ngIf="submitted && registerForm.get('username')?.errors">
+        <div *ngIf="registerForm.get('username')?.errors?.['required']"><small>Le pseudonyme est requis.</small></div>
+        <div *ngIf="registerForm.get('username')?.errors?.['hasWhiteSpace']"><small>Le pseudonyme ne doit pas contenir d'espaces.</small></div>
+        <div *ngIf="registerForm.get('username')?.errors?.['isTooShort']"><small>Le pseudonyme doit contenir au moins 3 caractères..</small></div>
+        <div *ngIf="registerForm.get('username')?.errors?.['usernameTaken']"><small>Ce pseudonyme est déjà pris.</small></div>
+      </div>
+    </div>
+
+    <div class="input">
+      <label for="email">Adresse e-mail</label>
+      <input type="email" id="email" formControlName="email">
+      <div class='unvalid' *ngIf="submitted && registerForm.get('email')?.errors">
+        <div *ngIf="registerForm.get('email')?.errors?.['required']"><small>L'adresse e-mail est requise.</small></div>
+        <div *ngIf="registerForm.get('email')?.errors?.['emailInvalid']"><small>L'adresse e-mail n'est pas dans un format valide.</small></div>
+        <div *ngIf="registerForm.get('email')?.errors?.['emailTaken']"><small>L'adresse e-mail est déjà utilisée.</small></div>
+      </div>
+    </div>
+
+    <div class="input">
+      <label for="password">Mot de passe</label>
+      <input type="password" id="password" formControlName="password">
+      <div class='unvalid' *ngIf="submitted && registerForm.get('password')?.errors">
+        <div *ngIf="registerForm.get('password')?.errors?.['required']"><small>Le mot de passe est requis.</small></div>
+        <div *ngIf="registerForm.get('password')?.errors?.['passwordInvalid']"><small>Le mot de passe doit contenir au moins huit caractères, dont une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial.</small></div>
+      </div>
+    </div>
+
+    <div class="input">
+      <label for="confirmPassword">Confirmation du mot de passe</label>
+      <input type="password" id="confirmPassword" formControlName="confirmPassword">
+      <div class='unvalid' *ngIf="submitted && registerForm.errors?.['passwordMismatch']">
+        <small>Les mots de passe ne correspondent pas.</small>
+      </div>
+    </div>
+
+    <button type="submit">S'inscrire</button>
+  </form>
+</div>
