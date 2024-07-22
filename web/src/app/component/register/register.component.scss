@@ -28,7 +28,6 @@
   input[type="password"] {
     width: 100%;
     padding: 8px;
-    margin-bottom: 15px;
     border: 1px solid #d1bfa7; /* Light brown border */
     border-radius: 5px;
     box-sizing: border-box;
@@ -56,13 +55,15 @@
     background-color: #8a5a3e; /* Darker brown on hover */
   }
   
-  div {
+  .input {
     margin-bottom: 15px;
   }
   
   .unvalid {
     display: flex;
     color: red;
-    justify-content: center;
+    justify-content: left;
+    flex-direction: column;
+    gap: 1px; /* Ajoute un espace entre chaque élément */
   }
   

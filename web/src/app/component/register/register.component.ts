@@ -17,8 +17,8 @@ import { Router } from '@angular/router';
 export class RegisterComponent implements OnInit, OnDestroy{
   registerForm!: FormGroup;
   submitted = false;
-  usernames: string[] = [];
-  emails: string[] = [];
+  usernames: string[] = []; // Tableau des noms d'utilisateurs
+  emails: string[] = []; // Tableau des adresses e-mail
   private subscription!: Subscription;
 
   // Base de l'utilisateur, initialisé à des valeurs vides
@@ -33,6 +33,39 @@ export class RegisterComponent implements OnInit, OnDestroy{
    }
   
   ngOnInit() {
+    this.setUsersData();
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+  initializeForm(){
+    this.registerForm = this.formBuilder.group({
+      username: ['', [
+        Validators.required, 
+        this.noWhiteSpaceValidator.bind(this),
+        this.minLengthValidator.bind(this), 
+        this.uniqueUsernameValidator.bind(this)
+      ]],
+      email: ['', [
+        Validators.required, 
+        this.emailValidator.bind(this), 
+        this.uniqueEmailValidator.bind(this)
+      ]],
+      password: ['', [
+        Validators.required, 
+        this.passwordValidator.bind(this)
+      ]],
+      confirmPassword: ['', Validators.required]
+    }, {
+      validator: this.passwordMatchValidator.bind(this)
+    } as AbstractControlOptions);
+  }
+
+  setUsersData() { // Récupère les données des utilisateurs à l'initialisation de la page
     this.subscription = this.auth.getUsers().subscribe({
       next: (data) => {
         this.usernames = data.map((user: any) => user.username);
@@ -47,25 +80,6 @@ export class RegisterComponent implements OnInit, OnDestroy{
     });
   }
 
-  ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
-
-
-  initializeForm(){
-    this.registerForm = this.formBuilder.group({
-      username: ['', [Validators.required, this.noWhitespaceAndLengthValidator.bind(this), this.uniqueUsernameValidator.bind(this)]],
-      email: ['', [Validators.required, this.emailValidator.bind(this), this.uniqueEmailValidator.bind(this)]],
-      password: ['', [Validators.required, this.passwordValidator.bind(this)]],
-      confirmPassword: ['', Validators.required]
-    }, {
-      validator: this.passwordMatchValidator.bind(this)
-    } as AbstractControlOptions);
-  
-  }
-
   get f() { return this.registerForm.controls; }
 
   onSubmit(): void {
@@ -74,8 +88,6 @@ export class RegisterComponent implements OnInit, OnDestroy{
     if (this.registerForm.invalid) {
       return;
     }
-
-    console.log('Here');
 
     // Mise à jour des données de l'utilisateur
     this.user = {
@@ -88,13 +100,12 @@ export class RegisterComponent implements OnInit, OnDestroy{
     this.auth.register(this.user).subscribe({
       next: (response: HttpResponse<any>) => {
         console.log('Registration successful', response);
-        this.router.navigate(['/login']);
-
+        this.router.navigate(['/login']); // Redirige vers la page de connexion
       },
       error: (error) => {
         if (error.status === 500) {
           alert('An error occurred. Please try again later.'); // En cas d'erreur d'enregistrement, une alerte est lancée
-          this.router.navigate(['/register']); //recharge ensuite la page d'enregistrement
+          this.router.navigate(['/register']); // Redirige ensuite vers la page d'enregistrement
         }
         else {
           console.error('Registration error', error);
@@ -103,16 +114,17 @@ export class RegisterComponent implements OnInit, OnDestroy{
     });
   }
 
-  noWhitespaceAndLengthValidator(control: AbstractControl): ValidationErrors | null {
-    if (control.value) {
-      // Vérifie si la valeur contient des espaces
-      const hasWhitespace = control.value.indexOf(' ') >= 0;
-      // Vérifie si la longueur de la valeur est inférieure à 3 caractères
-      const isTooShort = control.value.length < 3;
-  
-      if (hasWhitespace || isTooShort) {
-        return { whitespaceOrMinLength: true };
-      }
+  noWhiteSpaceValidator(control: AbstractControl): ValidationErrors | null { // Vérifie si la valeur contient des espaces
+    if (control.value && control.value.indexOf(' ') >= 0) {
+      return { hasWhiteSpace: true };
+    }
+    return null;
+  }
+
+  minLengthValidator(control: AbstractControl): ValidationErrors | null { // Vérifie si la longueur de la valeur est inférieure à 3 caractères
+    const MIN_LENGTH = 3;
+    if (control.value && control.value.length < MIN_LENGTH) {
+      return { isTooShort: true };
     }
     return null;
   }
