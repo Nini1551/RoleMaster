@@ -16,8 +16,6 @@ export class LoginComponent {
   submitted = false;
   errorMessage: string | null = null;
 
-
-
   constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
   }
   
