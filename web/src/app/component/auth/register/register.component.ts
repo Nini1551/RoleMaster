@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, FormsModule, ReactiveFormsModule, AbstractControlOptions } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
-import { AuthService } from '../../service/auth.service';
-import { User } from '../../../type';
+import { AuthService } from '../../../service/auth.service';
+import { User } from '../../../../type';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 
