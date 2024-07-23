@@ -1,0 +1,25 @@
+<nav class="navbar">
+  <div class="navbar-left">
+    <a class="img-button" href="/home">
+      <img src="logo/logo.png" alt="Logo" class="logo">
+    </a>
+  </div>
+  <div class="navbar-center">
+    <h1 class="navbar-title">RoleMaster</h1>
+  </div>
+  <div class="navbar-right">
+    <div *ngIf="!isAuthenticated">
+      <a class="nav-button" href="/register" >S'inscrire</a>
+      <a class="nav-button" href="/login" >Se connecter</a>
+    </div>
+    <div *ngIf="isAuthenticated">
+      <div class="nav-profile">
+        <span class="nav-span username">{{ username }}</span>
+        <a class="img-button" href="/home">
+          <img src="default_user/avatar-placeholder.png" alt="Avatar" class="avatar">
+        </a>
+      </div>
+      <button class="nav-button" (click)="logout()">Se déconnecter</button>
+    </div>
+  </div>
+</nav>
