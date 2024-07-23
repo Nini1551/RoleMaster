@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, 
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../service/auth.service';
 import { Router } from '@angular/router';
+import { emailValidator } from '../../../validator/auth/email';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,7 @@ export class LoginComponent {
   
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, emailValidator.bind(this)]],
       password: ['',[Validators.required]]
     });
   }
@@ -43,9 +44,12 @@ export class LoginComponent {
         this.router.navigate(['/home']);
       },
       error: (error) => {
-        console.error('Login error', error);
-        this.errorMessage = 'Adresse e-mail et/ou mot de passe incorrect(s). Veuillez réessayer.';
         this.submitted = false;
+        console.error('Login error', error);
+
+        if (error.status === 404) {
+          this.errorMessage = 'Adresse e-mail et/ou mot de passe incorrect(s). Veuillez réessayer.';
+        }
       }
     });
   }
