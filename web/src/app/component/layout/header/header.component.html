@@ -13,9 +13,12 @@
       <a class="nav-button" href="/login" >Se connecter</a>
     </div>
     <div *ngIf="isAuthenticated">
-      <a class="img-button" href="/home">
-        <img src="default_user/avatar-placeholder.png" alt="Avatar" class="avatar">
-      </a>
+      <div class="nav-profile">
+        <span class="nav-span username">{{ username }}</span>
+        <a class="img-button" href="/home">
+          <img src="default_user/avatar-placeholder.png" alt="Avatar" class="avatar">
+        </a>
+      </div>
       <button class="nav-button" (click)="logout()">Se déconnecter</button>
     </div>
   </div>

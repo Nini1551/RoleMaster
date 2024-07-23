@@ -63,6 +63,19 @@
   transition: background-color 0.3s, transform 0.2s;
 }
 
+.nav-span {
+  overflow: hidden;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.nav-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .pseudo {
   font-weight: bold;
   font-size: 1em;
@@ -95,9 +108,11 @@
   }
 }
 
-.pseudo {
-  font-weight: bold;
-  font-size: 2em;
+@media (max-width: 468px) {
+
+  .username {
+    display: none; /* Hide the title on small screens */
+  }
 }
 
 

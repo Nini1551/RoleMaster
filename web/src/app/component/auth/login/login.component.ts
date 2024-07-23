@@ -47,7 +47,7 @@ export class LoginComponent {
         this.submitted = false;
         console.error('Login error', error);
 
-        if (error.status === 404) {
+        if ((error.status === 401) || (error.status === 404)) {
           this.errorMessage = 'Adresse e-mail et/ou mot de passe incorrect(s). Veuillez réessayer.';
         }
       }
