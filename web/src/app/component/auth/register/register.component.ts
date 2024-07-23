@@ -6,6 +6,9 @@ import { AuthService } from '../../../service/auth.service';
 import { User } from '../../../../type';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { passwordMatchValidator, passwordValidator } from '../../../validator/auth/password';
+import { emailValidator, uniqueEmailValidator } from '../../../validator/auth/email';
+import { minLengthValidator, noWhiteSpaceValidator, uniqueUsernameValidator } from '../../../validator/auth/username';
 
 @Component({
   selector: 'app-register',
@@ -46,22 +49,22 @@ export class RegisterComponent implements OnInit, OnDestroy{
     this.registerForm = this.formBuilder.group({
       username: ['', [
         Validators.required, 
-        this.noWhiteSpaceValidator.bind(this),
-        this.minLengthValidator.bind(this), 
-        this.uniqueUsernameValidator.bind(this)
+        noWhiteSpaceValidator.bind(this),
+        minLengthValidator.bind(this), 
+        uniqueUsernameValidator(this.usernames).bind(this)
       ]],
       email: ['', [
         Validators.required, 
-        this.emailValidator.bind(this), 
-        this.uniqueEmailValidator.bind(this)
+        emailValidator.bind(this), 
+        uniqueEmailValidator(this.emails).bind(this)
       ]],
       password: ['', [
         Validators.required, 
-        this.passwordValidator.bind(this)
+        passwordValidator.bind(this)
       ]],
       confirmPassword: ['', Validators.required]
     }, {
-      validator: this.passwordMatchValidator.bind(this)
+      validator: passwordMatchValidator.bind(this)
     } as AbstractControlOptions);
   }
 
@@ -113,68 +116,4 @@ export class RegisterComponent implements OnInit, OnDestroy{
       }
     });
   }
-
-  noWhiteSpaceValidator(control: AbstractControl): ValidationErrors | null { // Vérifie si la valeur contient des espaces
-    if (control.value && control.value.indexOf(' ') >= 0) {
-      return { hasWhiteSpace: true };
-    }
-    return null;
-  }
-
-  minLengthValidator(control: AbstractControl): ValidationErrors | null { // Vérifie si la longueur de la valeur est inférieure à 3 caractères
-    const MIN_LENGTH = 3;
-    if (control.value && control.value.length < MIN_LENGTH) {
-      return { isTooShort: true };
-    }
-    return null;
-  }
-
-  uniqueUsernameValidator(control: AbstractControl): ValidationErrors | null {
-    const username = control.value;
-    const isUnique = this.usernames.indexOf(username) === -1;
-    return isUnique ? null : { 'usernameTaken': true };
-  }
-  
-
-  emailValidator(control: AbstractControl): ValidationErrors | null {
-    const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (control.value && !emailRegex.test(control.value)) {
-      return { emailInvalid: true };
-    }
-    return null;
-  } 
-
-  uniqueEmailValidator(control: AbstractControl) : ValidationErrors | null {
-    const email = control.value
-    const isUnique = this.emails.indexOf(email) === -1;
-    return isUnique ? null : { 'emailTaken': true };
-  }
-
-
-  passwordValidator(control: AbstractControl): ValidationErrors | null {
-    const value = control.value;
-
-    if (!value) {
-      return null;
-    }
-
-    const hasMinLength = value.length >= 8;
-    const hasUpperCase = value.split('').some((char : string) => char >= 'A' && char <= 'Z');
-    const hasLowerCase = value.split('').some((char : string) => char >= 'a' && char <= 'z');
-    const hasNumeric = value.split('').some((char : string) => char >= '0' && char <= '9');
-    const hasSpecial = value.split('').some((char : string) => '!@#$%^&*(),.?":{}|<>'.includes(char));
-
-    const passwordValid = hasMinLength && hasUpperCase && hasLowerCase && hasNumeric && hasSpecial;
-
-    return !passwordValid ? { 'passwordInvalid': true } : null;
-  }
-
-  passwordMatchValidator(group: AbstractControl): ValidationErrors | null {
-    const password = group.get('password')?.value;
-    const confirmPassword = group.get('confirmPassword')?.value;
-
-    return password === confirmPassword ? null : { 'passwordMismatch': true };
-  }
-
-
 }
