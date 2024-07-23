@@ -24,15 +24,14 @@ body {
     margin-bottom: 5px;
     color: #5a3e2b; /* Dark brown text */
     font-weight: bold;
-    font-size: 1.5em;
+    font-size: 1em;
   }
   
   input[type="text"],
   input[type="email"],
   input[type="password"] {
     width: 100%;
-    padding: 15px;
-    margin-bottom: 15px;
+    padding: 8px;
     border: 1px solid #d1bfa7; /* Light brown border */
     border-radius: 5px;
     box-sizing: border-box;
@@ -60,10 +59,18 @@ body {
     background-color: #8a5a3e; /* Darker brown on hover */
   }
   
-  div {
+  .input, .error-message {
     margin-bottom: 15px;
   }
   
-  div *ngIf {
-    color: #d9534f; /* Red for error messages */
+  .unvalid {
+    display: flex;
+    color: red;
+    justify-content: left;
+    flex-direction: column;
+    gap: 5px; /* Ajoute un espace entre chaque élément */
   }
+
+form div {
+  margin-bottom: 10px;
+}  

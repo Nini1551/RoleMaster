@@ -5,11 +5,12 @@
   align-items: center;
   background: linear-gradient(90deg, #8b4513 0%, #b8860b 100%);
   border-bottom: 5px solid #d2691e;
-}
+}S
 
-.navbar-left, .navbar-center, .navbar-right {
+.navbar-left, .navbar-center, .navbar-right div {
   display: flex;
   align-items: center;
+  gap: 10px;
 }
 
 .navbar-right {
@@ -20,7 +21,7 @@
   margin: 0 20px;
 }
 
-.logo-button {
+.img-button {
   display: flex;
   align-items: center;
 }
@@ -28,6 +29,13 @@
 .logo {
   height: 65px;
   width: auto;
+}
+
+.avatar {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
 }
 
 .navbar-title {
@@ -46,7 +54,6 @@
 .nav-button {
   position: relative;
   overflow: hidden;
-  margin-left: 20px;
   padding: 10px 15px;
   text-decoration: none;
   color: #fff;
@@ -54,6 +61,26 @@
   border: 2px solid #d2691e;
   border-radius: 5px;
   transition: background-color 0.3s, transform 0.2s;
+}
+
+.nav-span {
+  overflow: hidden;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.nav-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pseudo {
+  font-weight: bold;
+  font-size: 1em;
+  color: #fff;
+  margin: 20px 0;
 }
 
 .nav-button:hover {
@@ -81,9 +108,11 @@
   }
 }
 
-.pseudo {
-  font-weight: bold;
-  font-size: 2em;
+@media (max-width: 468px) {
+
+  .username {
+    display: none; /* Hide the title on small screens */
+  }
 }
 
 
