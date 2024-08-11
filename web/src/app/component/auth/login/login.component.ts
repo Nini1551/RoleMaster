@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, 
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../service/auth.service';
 import { Router } from '@angular/router';
-import { emailValidator } from '../../../validator/auth/email';
+import { emailValidator } from '../../../validator//auth/email';
 
 @Component({
   selector: 'app-login',
@@ -38,10 +38,12 @@ export class LoginComponent {
     const {email, password} = this.loginForm.value;
     this.authService.login(email, password).subscribe({
       next: (response) => {
-        console.log('Login Successful', response);
-        sessionStorage.setItem('authToken', response.token);
-        sessionStorage.setItem('username', response.username)
         this.router.navigate(['/home']);
+        /**this.authService.checkAuthStatus().subscribe({
+          next: (response) => {
+            this.router.navigate(['/home']);
+          },
+        }); **/
       },
       error: (error) => {
         this.submitted = false;
@@ -51,6 +53,12 @@ export class LoginComponent {
           this.errorMessage = 'Adresse e-mail et/ou mot de passe incorrect(s). Veuillez réessayer.';
         }
       }
+    });
+    console.log
+    this.authService.checkAuthStatus().subscribe({
+      next: (response) => {
+        this.router.navigate(['/home']);
+      },
     });
   }
 }
