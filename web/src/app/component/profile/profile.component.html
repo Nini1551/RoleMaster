@@ -35,7 +35,7 @@
 
         <div class="button-group">
           <button type="submit">Enregistrer</button>
-          <button type="button" class="cancel-button" (click)="cancelEdit('username')">Annuler</button>
+          <button type="button" class="cancel-button" (click)="cancelEdit('email')">Annuler</button>
         </div>
         <p *ngIf="emailErrorMessage" class="error-message">{{ emailErrorMessage }}</p>
         <p *ngIf="emailSuccessMessage" class="success-message">{{ emailSuccessMessage }}</p>

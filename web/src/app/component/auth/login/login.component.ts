@@ -3,8 +3,7 @@ import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, 
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../service/auth.service';
 import { Router } from '@angular/router';
-import { emailValidator } from '../../../validator//auth/email';
-
+import { emailValidator } from '../../../validator/auth/email';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -54,7 +53,6 @@ export class LoginComponent {
         }
       }
     });
-    console.log
     this.authService.checkAuthStatus().subscribe({
       next: (response) => {
         this.router.navigate(['/home']);
