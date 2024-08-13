@@ -61,7 +61,7 @@ const logout = async (req, res) => {
         if (err) {
             return res.status(500).send('Erreur lors de la déconnexion');
         }
-        res.clearCookie('connect.sid', {
+        res.clearCookie('RoleMaster_auth', {
             path: '/', // Assurez-vous que le chemin correspond à celui utilisé pour définir le cookie
             domain: 'localhost', // Assurez-vous que le domaine correspond
             httpOnly: true, // Le cookie HttpOnly sera supprimé par le serveur

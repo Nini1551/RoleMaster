@@ -18,10 +18,12 @@ app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 
 app.use(session({
+    name: 'RoleMaster_auth',
     secret: process.env.SESSION_KEY,
     resave: false,
     saveUninitialized: false,
     cookie: {
+        
         path: '/', // chemin d'autorisation pour le cookie
         domain: 'localhost', // domaine autorisé pour le cookie
         httpOnly: true, // empèche l'accès au cookie avec js dans le nav
