@@ -19,7 +19,7 @@ export class HeaderComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-     this.authService.checkAuthStatus().subscribe();
+     //this.authService.checkAuthStatus().subscribe();
      /**  next: (response) => {
         this.isAuthenticated = response.authenticated;
         console.log(this.isAuthenticated);
@@ -45,16 +45,19 @@ export class HeaderComponent {
     this.authService.getUserName$().pipe(
       takeUntil(this.destroy$)).subscribe(username => {
         this.username = username;
+        console.log('username is : ' + username)
       });
     
   }
 
-    
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  };
         
 
 
   logout(): void {
-    console.log('hello');
     this.authService.checkAuthStatus().subscribe({
       next: (response) => {
         if (response) {
@@ -63,6 +66,9 @@ export class HeaderComponent {
               this.isAuthenticated = false;
               this.username = null;
               this.router.navigate(['/login']);
+            },
+            error: (err) => {
+              console.error('Error when tried to Logout.', err);
             }
           });
        }

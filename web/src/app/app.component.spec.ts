@@ -1,29 +1,35 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 
 describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+  let compiled: HTMLElement;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent],
+      imports: [AppComponent], // Import the standalone component
+      providers: [provideHttpClientTesting(), HttpClient, HttpHandler] // Provide the HttpClient testing utilities
     }).compileComponents();
+
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+    compiled = fixture.nativeElement;
+    fixture.detectChanges();
   });
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    expect(component).toBeTruthy();
   });
 
-  it(`should have the 'web' title`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('RoleMaster');
+  it(`should have the title 'RoleMaster'`, () => {
+    expect(component.title).toEqual('RoleMaster');
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, web');
+  it('should render header and footer components', () => {
+    expect(compiled.querySelector('app-header')).toBeTruthy();
+    expect(compiled.querySelector('app-footer')).toBeTruthy();
   });
 });

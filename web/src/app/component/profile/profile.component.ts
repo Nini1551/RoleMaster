@@ -99,6 +99,7 @@ export class ProfileComponent  implements OnInit {
     },
     error: (error) => {
       this.usernameErrorMessage = error.error.errorMessage;
+    
     }
   });
  }
@@ -106,7 +107,7 @@ export class ProfileComponent  implements OnInit {
  changeEmail(): void {
   this.emailErrorMessage = null;
   this.emailSuccessMessage = null;
-
+  
   this.authService.changeEmailRequest(this.newEmail!).subscribe({
     next: (response) => {
       this.emailSuccessMessage = response.successMessage;

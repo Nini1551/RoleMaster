@@ -27,9 +27,7 @@ export class AuthService {
     const user = { email, password }
     return this.http.post(`${this.baseUrl}/login`, user, { withCredentials: true}).pipe(
       tap((response: any) => {
-        console.log(response)
         if (response.authenticated) {
-          console.log(response.authenticated);
           this.authenticatedSubject.next(true);
           this.usernameSubject.next(response.username);
         }
@@ -48,7 +46,6 @@ export class AuthService {
       return this.http.get(`${this.baseUrl}/check-auth`, { withCredentials: true }).pipe(
         tap((response: any) => {
           if (response.authenticated) {
-            console.log(response)
             this.authenticatedSubject.next(true);
             this.usernameSubject.next(response.user);
           }

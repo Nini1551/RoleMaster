@@ -37,7 +37,16 @@ export class LoginComponent {
     const {email, password} = this.loginForm.value;
     this.authService.login(email, password).subscribe({
       next: (response) => {
-        this.router.navigate(['/home']);
+        if (response.authenticated) {
+          this.authService.checkAuthStatus().subscribe({
+            next: (response) => {
+              if (response.authenticated) {
+              this.router.navigate(['/home']);
+              }
+            },
+          });
+
+        }
         /**this.authService.checkAuthStatus().subscribe({
           next: (response) => {
             this.router.navigate(['/home']);
@@ -52,11 +61,6 @@ export class LoginComponent {
           this.errorMessage = 'Adresse e-mail et/ou mot de passe incorrect(s). Veuillez réessayer.';
         }
       }
-    });
-    this.authService.checkAuthStatus().subscribe({
-      next: (response) => {
-        this.router.navigate(['/home']);
-      },
     });
   }
 }
