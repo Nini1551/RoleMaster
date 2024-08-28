@@ -5,6 +5,8 @@ const  userRoutes  =  require('./routes/userRoute');
 const cors = require('cors');
 const corsOptions = require('./config/cors');
 const session = require('express-session');
+const swaggerSpec = require('./config/swagger');
+const swaggerUi = require('swagger-ui-express');
 
 
 const PORT = process.env.PORT;
@@ -32,6 +34,7 @@ app.use(session({
     }
 }));
 
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // routes user API
 app.use('/api/users', userRoutes);
