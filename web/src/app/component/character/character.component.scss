@@ -1,10 +1,32 @@
 
 .div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden; /* Prevent scrolling within the profile page */
+  flex-direction: column;
+  
   margin: 0;
-  position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  margin-bottom: 50px;
+  top: 50px;
+}
+
+h1 {
+  background-color: #fff8e7; /* Off-white with a hint of brown */
+  border-radius: 10px;
+  padding: 0 100px;
+  display: block;
+  color: #5a3e2b; /* Dark brown text */
+  font-weight: bold;
+  font-size: 2.5em;
+  text-align: center;
+  margin: 0 0 5px 0;
+}
+
+form, app-character-note {
   background-color: #fff8e7; /* Off-white with a hint of brown */
   border: 1px solid #d1bfa7; /* Light brown border */
   padding: 20px;
@@ -14,13 +36,58 @@
   max-width: 100%;
   display: flex;
   flex-direction: column;
+  gap: 10px;
 }
 
-h1 {
+label {
   display: block;
+  margin-bottom: 5px;
   color: #5a3e2b; /* Dark brown text */
   font-weight: bold;
-  font-size: 2.5em;
-  text-align: center;
-  margin: 0 0 5px 0;
+}
+
+input[type="name"],
+input[type="note"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #d1bfa7; /* Light brown border */
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+input[type="name"]:focus,
+input[type="note"]:focus {
+  border-color: #a67c52; /* Darker brown on focus */
+  outline: none;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #a67c52; /* Dark brown button */
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #8a5a3e; /* Darker brown on hover */
+}
+
+.unvalid {
+  display: flex;
+  color: red;
+  justify-content: left;
+  flex-direction: column;
+  gap: 5px; /* Ajoute un espace entre chaque élément */
+}
+
+.valid {
+  display: flex;
+  color: green;
+  justify-content: left;
+  flex-direction: column;
+  gap: 5px; /* Ajoute un espace entre chaque élément */
 }

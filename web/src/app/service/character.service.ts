@@ -28,4 +28,16 @@ export class CharacterService {
   delete(id: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/delete/${id}`, { withCredentials: true });
   }
+
+  getNotes(id: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/${id}/notes`, { withCredentials: true });
+  };
+
+  createNote(id: string, name: string, note: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/${id}/notes/create`, { name, note }, { withCredentials: true });
+  };
+
+  deleteNote(id: string, noteId: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/${id}/notes/delete/${noteId}`, { withCredentials: true });
+  };
 }

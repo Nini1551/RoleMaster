@@ -1,0 +1,31 @@
+span {
+  display: inline-block;
+  width: 200px;
+}
+
+button {
+  width: 100px;
+  padding: 10px;
+  background-color: #a67c52; /* Dark brown button */
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
+button:hover {
+  background-color: red; /* Darker brown on hover */
+}
+
+.note {
+  background-color: white;
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid #d1bfa7; /* Light brown border */
+}

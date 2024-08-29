@@ -7,10 +7,18 @@ const CharacterNote = sequelize.define('CharacterNote', {
     autoIncrement: true,
     primaryKey: true
   },
+  name: {
+    type: DataTypes.STRING(50),
+    allowNull: false
+  },
+  note: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+    defaultValue: ''
+  },
   characterId: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    unique: true,
     references: {
       model: 'characters',
       key: 'id',
@@ -18,6 +26,12 @@ const CharacterNote = sequelize.define('CharacterNote', {
     }
   }
 }, {
+  indexes: [
+    {
+      unique: true,
+      fields: ['characterId', 'name']
+    }
+  ],
   tableName: 'character-notes',
   timestamps: false // Si vous n'avez pas de colonnes `updated_at`, sinon mettre `true`
 });

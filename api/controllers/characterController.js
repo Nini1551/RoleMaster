@@ -1,5 +1,6 @@
 const e = require('express');
 const Character = require('../models/character');
+const CharacterNote = require('../models/character-note');
 
 const createCharacter = async (req, res) => {
     try {
@@ -86,9 +87,82 @@ const deleteCharacter = async (req, res) => {
       };
 };
 
+const getCharacterNotes = async (req, res) => {
+    try {
+        const characterId = parseInt(req.params['id']);
+        const characterNotes = await CharacterNote.findAll({
+            where: {
+                characterId
+            },
+            attributes: ['id', 'name', 'note']
+        });
+
+        if (characterNotes) {
+            return res.status(200).send(characterNotes);
+        } else {
+            return res.status(404).send('Character notes not found');
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send('Internal Serveur Error')
+    }
+};
+
+const createCharacterNote = async (req, res) => {
+    try {
+        const characterId = parseInt(req.params['id']);
+        console.log(characterId);
+        console.log(req.body);
+        const { name, note } = req.body;
+        const data = {
+            name: name,
+            note: note,
+            characterId: characterId
+        };
+
+        const characterNote = await CharacterNote.create(data);
+
+        if (characterNote) {
+            return res.status(201).send(characterNote);
+        } else {
+            return res.status(409).send('This character note already exists');
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send('Internal Serveur Error')
+    }
+};
+
+const deleteCharacterNote = async (req, res) => {
+    try {
+        const characterId = parseInt(req.params['id']);
+        const id = parseInt(req.params['noteId']);
+
+        const characterNote = await CharacterNote.findOne({
+            where: {
+                id,
+                characterId
+            }       
+        });
+
+        if (characterNote) {
+            await characterNote.destroy();
+            return res.status(200).send({message: 'Character note deleted'});
+        } else {
+            return res.status(404).send('Character note not found');
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send('Internal Serveur Error')
+    }
+};
+
 module.exports = {
     createCharacter,
     getCharacters,
     deleteCharacter,
-    getCharacter
+    getCharacter,
+    getCharacterNotes,
+    createCharacterNote,
+    deleteCharacterNote
 };

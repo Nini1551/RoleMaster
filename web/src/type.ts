@@ -8,3 +8,9 @@ export interface Character {
   id: string;
   name: string;
 }
+
+export interface CharacterNote {
+  id: string;
+  name: string;
+  note: string;
+}

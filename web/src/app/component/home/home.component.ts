@@ -3,7 +3,6 @@ import { Character } from '../../../type';
 import { CharacterService } from '../../service/character.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
 import { noWhiteSpaceValidator } from '../../validator/auth/username.validator';
 import { uniqueCharacterNameValidator } from '../../validator/auth/character.validator';
 import { CharacterItemComponent } from '../character-item/character-item.component';
@@ -23,7 +22,7 @@ export class HomeComponent {
 
   characterForm!: FormGroup;
 
-  constructor(private characterService: CharacterService, private formBuilder: FormBuilder, private router: Router) {
+  constructor(private characterService: CharacterService, private formBuilder: FormBuilder) {
     this.getCharacters();
   }
 
@@ -79,7 +78,7 @@ export class HomeComponent {
       next: () => {
         this.getCharacters();
         this.errorMessage = null;
-        this.successMessage = null
+        this.successMessage = null;
       },
       error: (error) => {
         console.error(error);
