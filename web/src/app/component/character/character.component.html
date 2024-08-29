@@ -1,3 +1,24 @@
 <div class="div">
   <h1>{{ character.name | uppercase}}</h1>
+  <form [formGroup]="noteForm" (ngSubmit)="onSubmit()">
+    <label for="name">Ajouter une note</label>
+    <input type="name" id="name" formControlName="name">
+    <div class="unvalid" *ngIf="submitted && noteForm.get('name')?.errors">
+      <div *ngIf="noteForm.get('name')?.errors?.['required']"><small>Le nom de la note est requise.</small></div>
+    </div>
+    <input type="note" id="note" formControlName="note">
+    <div *ngIf="successMessage" class="valid">
+      <small >{{ successMessage }}</small>
+    </div>
+    <div *ngIf="errorMessage" class="unvalid">
+      <small >{{ errorMessage }}</small>
+    </div>
+
+    <button type="submit">Créer</button>
+  </form>
+
+  
+  <div class="notes">
+    <app-character-note *ngFor="let note of characterNotes" [note]="note" (delete)="deleteNote($event)"></app-character-note>
+  </div>
 </div>
