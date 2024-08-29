@@ -1,0 +1,19 @@
+span {
+  display: inline-block;
+  width: 200px;
+}
+
+button {
+  width: 100px;
+  padding: 10px;
+  background-color: #a67c52; /* Dark brown button */
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: red; /* Darker brown on hover */
+}
