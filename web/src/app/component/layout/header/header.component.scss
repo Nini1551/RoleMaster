@@ -5,7 +5,8 @@
   align-items: center;
   background: linear-gradient(90deg, #8b4513 0%, #b8860b 100%);
   border-bottom: 5px solid #d2691e;
-  position: -webkit-sticky;
+  position: fixed;
+  width: 100%;
 }
 
 .navbar-left, .navbar-center, .navbar-right div {
