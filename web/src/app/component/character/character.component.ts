@@ -14,7 +14,7 @@ import { CharacterNoteComponent } from "../character-note/character-note.compone
   styleUrl: './character.component.scss'
 })
 export class CharacterComponent {
-  id: string = '0';
+  id!: string;
   character: Character = { id: '0', name: 'Loading...' };
   characterNotes: CharacterNote[] = [];
   noteForm!: FormGroup;
@@ -23,6 +23,14 @@ export class CharacterComponent {
   successMessage: string | null = null;
 
   constructor(private characterService: CharacterService, private route: ActivatedRoute, private formBuilder: FormBuilder) {
+  }
+
+  ngOnInit() {
+    this.noteForm = this.formBuilder.group({
+      name: ['', [Validators.required]],
+      note: [''],
+    });
+    
     this.route.params.subscribe(params => {
       this.id = params['id'];
       console.log(this.id);
@@ -35,13 +43,6 @@ export class CharacterComponent {
     });
 
     this.getNotes();
-  }
-
-  ngOnInit() {
-    this.noteForm = this.formBuilder.group({
-      name: ['', [Validators.required]],
-      note: [''],
-    });
   }
 
   getNotes() {
