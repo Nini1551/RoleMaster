@@ -1,4 +1,4 @@
-/* Global Styles */
+
 .div {
   display: flex;
   justify-content: center;
@@ -11,8 +11,22 @@
   top: 50%;
   left: 50%;
   margin-bottom: 50px;
+  top: 50px;
 }
-form, app-character-item {
+
+h1 {
+  background-color: #fff8e7; /* Off-white with a hint of brown */
+  border-radius: 10px;
+  padding: 0 100px;
+  display: block;
+  color: #5a3e2b; /* Dark brown text */
+  font-weight: bold;
+  font-size: 2.5em;
+  text-align: center;
+  margin: 0 0 5px 0;
+}
+
+form, app-character-note {
   background-color: #fff8e7; /* Off-white with a hint of brown */
   border: 1px solid #d1bfa7; /* Light brown border */
   padding: 20px;
@@ -32,7 +46,8 @@ label {
   font-weight: bold;
 }
 
-input[type="name"] {
+input[type="name"],
+input[type="note"] {
   width: 100%;
   padding: 8px;
   border: 1px solid #d1bfa7; /* Light brown border */
@@ -40,7 +55,8 @@ input[type="name"] {
   box-sizing: border-box;
 }
 
-input[type="name"]:focus {
+input[type="name"]:focus,
+input[type="note"]:focus {
   border-color: #a67c52; /* Darker brown on focus */
   outline: none;
 }
@@ -58,10 +74,6 @@ button {
 
 button:hover {
   background-color: #8a5a3e; /* Darker brown on hover */
-}
-
-.input {
-  margin-bottom: 15px;
 }
 
 .unvalid {

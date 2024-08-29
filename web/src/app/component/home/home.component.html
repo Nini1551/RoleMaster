@@ -19,6 +19,6 @@
     <button type="submit">Créer</button>
   </form>
   <div class="characters">
-    <app-character *ngFor="let character of characters" [character]="character" (delete)="deleteCharacter($event)"></app-character>
+    <app-character-item *ngFor="let character of characters" [character]="character" (delete)="deleteCharacter($event)"></app-character-item>
   </div>
 </div>
