@@ -1,1 +1,24 @@
-<p>home works!</p>
+<div class="div">
+  <form [formGroup]="characterForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="name">Ajouter un personnage</label>
+      <input type="name" id="name" formControlName="name">
+      <div class="unvalid" *ngIf="submitted && characterForm.get('name')?.errors">
+        <div *ngIf="characterForm.get('name')?.errors?.['required']"><small>Le nom du personnage est requis.</small></div>
+        <div *ngIf="characterForm.get('name')?.errors?.['hasWhiteSpace']"><small>Le nom du personnage ne doit pas contenir d'espace</small></div>
+        <div *ngIf="characterForm.get('name')?.errors?.['nameTaken']"><small>Plusieurs de vos personnages ne peuvent pas avoir le même nom.</small></div>
+      </div>
+      <div *ngIf="successMessage" class="valid">
+        <small >{{ successMessage }}</small>
+      </div>
+      <div *ngIf="errorMessage" class="unvalid">
+        <small >{{ errorMessage }}</small>
+      </div>
+    </div>
+
+    <button type="submit">Créer</button>
+  </form>
+  <div class="characters">
+    <app-character *ngFor="let character of characters" [character]="character" (delete)="deleteCharacter($event)"></app-character>
+  </div>
+</div>

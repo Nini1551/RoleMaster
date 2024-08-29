@@ -1,0 +1,81 @@
+/* Global Styles */
+.div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden; /* Prevent scrolling within the profile page */
+  flex-direction: column;
+  
+  margin: 0;
+  top: 50%;
+  left: 50%;
+  margin-bottom: 50px;
+}
+form, app-character {
+  background-color: #fff8e7; /* Off-white with a hint of brown */
+  border: 1px solid #d1bfa7; /* Light brown border */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: #5a3e2b; /* Dark brown text */
+  font-weight: bold;
+}
+
+input[type="name"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #d1bfa7; /* Light brown border */
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+input[type="name"]:focus {
+  border-color: #a67c52; /* Darker brown on focus */
+  outline: none;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #a67c52; /* Dark brown button */
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #8a5a3e; /* Darker brown on hover */
+}
+
+.input {
+  margin-bottom: 15px;
+}
+
+.unvalid {
+  display: flex;
+  color: red;
+  justify-content: left;
+  flex-direction: column;
+  gap: 5px; /* Ajoute un espace entre chaque élément */
+}
+
+.valid {
+  display: flex;
+  color: green;
+  justify-content: left;
+  flex-direction: column;
+  gap: 5px; /* Ajoute un espace entre chaque élément */
+}

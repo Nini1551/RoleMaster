@@ -1,7 +1,8 @@
 const express  = require('express');
 require("dotenv").config();
 const cookieParser = require('cookie-parser');
-const  userRoutes  =  require('./routes/userRoute');
+const userRoutes  =  require('./routes/userRoute');
+const characterRoutes  =  require('./routes/characterRoute');
 const cors = require('cors');
 const corsOptions = require('./config/cors');
 const session = require('express-session');
@@ -38,5 +39,6 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // routes user API
 app.use('/api/users', userRoutes);
+app.use('/api/characters', characterRoutes);
 
 app.listen(PORT, () => console.log(`Server is running on ${PORT}`));

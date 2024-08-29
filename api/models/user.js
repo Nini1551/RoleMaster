@@ -30,4 +30,6 @@ const User = sequelize.define('User', {
   timestamps: false // Si vous n'avez pas de colonnes `updated_at`, sinon mettre `true`
 });
 
+User.sync();
+
 module.exports = User;
