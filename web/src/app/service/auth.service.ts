@@ -1,53 +1,81 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { catchError, tap, of } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private authUrl = 'http://localhost:3000/auth'; // URL de votre backend
+  private baseUrl = 'http://localhost:3000/api/users';
+  private authenticatedSubject = new BehaviorSubject<boolean>(false);
   private usernameSubject = new BehaviorSubject<string | null>(null);
-  username$ = this.usernameSubject.asObservable();
+  
 
-  constructor(private http: HttpClient) {
-    const storedUsername = sessionStorage.getItem('username');
-    if (storedUsername) {
-      this.usernameSubject.next(storedUsername);
-    }
-  }
 
-  getUsers(): Observable<any> {
-    return this.http.get<any>(`${this.authUrl}/users`);
-  }
 
-  register(user: any): Observable<any> {
-    return this.http.post<any>(`${this.authUrl}/register`, user);
+  constructor(private http: HttpClient, private router: Router, private cookieService: CookieService) { }
+
+  signup(user: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/signup`, user);
   }
 
   login(email: string, password: string): Observable<any> {
-    return this.http.post<any>(`${this.authUrl}/login`, { email, password }).pipe(
-      tap(response => {
-        sessionStorage.setItem('authToken', response.token);
-        sessionStorage.setItem('username', response.username);
-        this.usernameSubject.next(response.username);
+    const user = { email, password }
+    return this.http.post(`${this.baseUrl}/login`, user, { withCredentials: true}).pipe(
+      tap((response: any) => {
+        if (response.authenticated) {
+          this.authenticatedSubject.next(true);
+          this.usernameSubject.next(response.username);
+        }
       })
-    );
+    )
   }
 
-  logout(): void {
-    sessionStorage.removeItem('authToken');
-    sessionStorage.removeItem('username');
-    this.usernameSubject.next(null);
+  logout(): Observable<any> {
+    // Retourner le résultat de la requête HTTP POST à la route /logout
+    return this.http.post(`${this.baseUrl}/logout`, {}, { withCredentials: true })// Met à jour l'état d'authentification après la déconnexion
+    }
+  
+
+
+  checkAuthStatus(): Observable<any> {
+      return this.http.get(`${this.baseUrl}/check-auth`, { withCredentials: true }).pipe(
+        tap((response: any) => {
+          if (response.authenticated) {
+            this.authenticatedSubject.next(true);
+            this.usernameSubject.next(response.user);
+          }
+        })
+      )
+      }
+  
+
+  isAuthenticated$(): Observable<boolean> {
+    return this.authenticatedSubject.asObservable();
+    }
+
+  getUserName$(): Observable<any> {
+    return this.usernameSubject.asObservable();
+  }
+  
+  getUserProfile(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/userProfile`, { withCredentials: true});
+  }
+  
+  changePasswordRequest(oldPassword: string, newPassword: string): Observable<any> {
+    return this.http.put(`${this.baseUrl}/changePassword`, {oldPassword, newPassword},{ withCredentials: true});
   }
 
-  isAuthenticated(): boolean {
-    return !!sessionStorage.getItem('authToken');
+  changeUsernameRequest(newUsername: string): Observable<any> {
+    return this.http.put(`${this.baseUrl}/changeUsername`, {newUsername}, {withCredentials: true});
   }
 
-  getUsername(): string | null {
-    return this.usernameSubject.value;
+  changeEmailRequest(newEmail: string): Observable<any> {
+    return this.http.put(`${this.baseUrl}/changeEmail`, {newEmail}, {withCredentials: true});
   }
+
 }
-

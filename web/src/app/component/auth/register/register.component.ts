@@ -36,13 +36,11 @@ export class RegisterComponent implements OnInit, OnDestroy{
    }
   
   ngOnInit() {
-    this.setUsersData();
+  
   }
 
   ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    
   }
 
   initializeForm(){
@@ -68,20 +66,7 @@ export class RegisterComponent implements OnInit, OnDestroy{
     } as AbstractControlOptions);
   }
 
-  setUsersData() { // Récupère les données des utilisateurs à l'initialisation de la page
-    this.subscription = this.auth.getUsers().subscribe({
-      next: (data) => {
-        this.usernames = data.map((user: any) => user.username);
-        this.emails = data.map((user: any) => user.email);
-      },
-      error: (err) => {
-        console.error('Error fetching users', err);
-      },
-      complete: () => {
-        console.log('User data fetch complete');
-      }
-    });
-  }
+  
 
   get f() { return this.registerForm.controls; }
 
@@ -100,15 +85,23 @@ export class RegisterComponent implements OnInit, OnDestroy{
     }
 
     // Envoi des données de l'utilisateur au serveur
-    this.auth.register(this.user).subscribe({
+    this.auth.signup(this.user).subscribe({
       next: (response: HttpResponse<any>) => {
-        console.log('Registration successful', response);
+        
         this.router.navigate(['/login']); // Redirige vers la page de connexion
       },
       error: (error) => {
+        if (error.status === 409) {
+          if (error.error.usernameTaken) {
+            this.registerForm.get('username')?.setErrors({ usernameTaken: true});
+          }
+          if (error.error.emailTaken) {
+            this.registerForm.get('email')?.setErrors({ emailTaken: true});
+          }
+        }
         if (error.status === 500) {
-          alert('An error occurred. Please try again later.'); // En cas d'erreur d'enregistrement, une alerte est lancée
-          this.router.navigate(['/register']); // Redirige ensuite vers la page d'enregistrement
+          alert('An error occurred. Please try again later.'); 
+          this.router.navigate(['/register']);
         }
         else {
           console.error('Registration error', error);

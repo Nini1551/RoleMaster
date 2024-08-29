@@ -1,0 +1,93 @@
+<div class="profile-page">
+  <div class="profile-container">
+    <div class="profile-content">
+      <h1 class="profile-title">Mon Profil</h1>
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      <div class="profile-item">
+        <label>Pseudonyme:</label>
+        <div class="profile-info">
+          <span *ngIf = "!editMode['username']">{{ username }}</span>
+          <span class="edit-button" *ngIf="!editMode['username']"(click)="editField('username')">Modifier</span>
+        </div>
+      </div>
+      <form *ngIf="editMode['username']" class="change-form" (ngSubmit)="changeUsername()">
+        <label for="newUsername">Nouveau Username</label>
+        <input type="text" id="newUsername" [(ngModel)]="newUsername" name="newUsername" required>
+
+        <div class="button-group">
+          <button type="submit">Enregistrer</button>
+          <button type="button" class="cancel-button" (click)="cancelEdit('username')">Annuler</button>
+        </div>
+        <p *ngIf="usernameErrorMessage" class="error-message">{{ usernameErrorMessage }}</p>
+        <p *ngIf="usernameSuccessMessage" class="success-message">{{ usernameSuccessMessage }}</p>
+      </form>
+
+      <div class="profile-item">
+        <label>Adresse e-mail:</label>
+        <div class="profile-info">
+          <span *ngIf="!editMode['email']">{{ email }}</span>
+          <span class="edit-button" *ngIf="!editMode['email']" (click)="editField('email')">Modifier</span>
+        </div>
+      </div>
+      <form *ngIf="editMode['email']" class="change-form" (ngSubmit)="changeEmail()">
+        <label for="newEmail">Nouvelle Adresse Mail</label>
+        <input type="text" id="newEmail" [(ngModel)]="newEmail" name="newEmail" required>
+
+        <div class="button-group">
+          <button type="submit">Enregistrer</button>
+          <button type="button" class="cancel-button" (click)="cancelEdit('email')">Annuler</button>
+        </div>
+        <p *ngIf="emailErrorMessage" class="error-message">{{ emailErrorMessage }}</p>
+        <p *ngIf="emailSuccessMessage" class="success-message">{{ emailSuccessMessage }}</p>
+      </form>
+
+      <div class="profile-item">
+          <label>Photo de profil:</label>
+          <div class="profile-info">
+              <span></span>
+              <span class="edit-button" (click)="editField('image')">Modifier</span>
+          </div>
+      </div>
+
+
+<!-- GESTION DU MOT DE PASSE -->
+
+
+<div class="profile-item">
+  <label>Mot de passe:</label>
+  <div class="profile-info">
+    <span *ngIf="!editMode['password']">********</span>
+    <span class="edit-button" *ngIf="!editMode['password']" (click)="editField('password')">Modifier</span>
+  </div>
+</div>
+
+<form *ngIf="editMode['password']" class="change-form" (ngSubmit)="changePassword()">
+  <label for="oldPassword">Ancien mot de passe</label>
+  <input type="password" id="oldPassword" [(ngModel)]="oldPassword" name="oldPassword" required>
+  
+  <label for="newPassword">Nouveau mot de passe</label>
+  <input type="password" id="newPassword" [(ngModel)]="newPassword" name="newPassword" required>
+  
+  <label for="confirmPassword">Confirmer le nouveau mot de passe</label>
+  <input type="password" id="confirmPassword" [(ngModel)]="confirmPassword" name="confirmPassword" required>
+  
+  <div class="button-group">
+    <button type="submit">Enregistrer</button>
+    <button type="button" class="cancel-button" (click)="cancelEdit('password')">Annuler</button>
+  </div>
+  
+  <p *ngIf="passwordErrorMessage" class="error-message">{{ passwordErrorMessage }}</p>
+  <p *ngIf="passwordSuccessMessage" class="success-message">{{ passwordSuccessMessage }}</p>
+</form> 
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+

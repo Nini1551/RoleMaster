@@ -24,3 +24,6 @@ api/.sequelize/*
 # Environment variables
 .env
 api/.env
+
+# Json
+./package-lock.Json

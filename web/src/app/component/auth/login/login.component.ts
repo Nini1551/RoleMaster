@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../service/auth.service';
 import { Router } from '@angular/router';
 import { emailValidator } from '../../../validator/auth/email';
-
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -38,10 +37,21 @@ export class LoginComponent {
     const {email, password} = this.loginForm.value;
     this.authService.login(email, password).subscribe({
       next: (response) => {
-        console.log('Login Successful', response);
-        sessionStorage.setItem('authToken', response.token);
-        sessionStorage.setItem('username', response.username)
-        this.router.navigate(['/home']);
+        if (response.authenticated) {
+          this.authService.checkAuthStatus().subscribe({
+            next: (response) => {
+              if (response.authenticated) {
+              this.router.navigate(['/home']);
+              }
+            },
+          });
+
+        }
+        /**this.authService.checkAuthStatus().subscribe({
+          next: (response) => {
+            this.router.navigate(['/home']);
+          },
+        }); **/
       },
       error: (error) => {
         this.submitted = false;
