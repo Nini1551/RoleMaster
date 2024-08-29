@@ -1,4 +1,5 @@
 const { DataTypes } = require('sequelize');
+const Character = require('./character');
 const sequelize = require('../config/database');
 
 const User = sequelize.define('User', {
@@ -28,6 +29,11 @@ const User = sequelize.define('User', {
 }, {
   tableName: 'users',
   timestamps: false // Si vous n'avez pas de colonnes `updated_at`, sinon mettre `true`
+});
+
+User.hasMany(Character, {
+  foreignKey: 'userId',
+  onDelete: 'CASCADE'
 });
 
 User.sync();
