@@ -6,9 +6,9 @@ import { AuthService } from '../../../service/auth.service';
 import { User } from '../../../../type';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
-import { passwordMatchValidator, passwordValidator } from '../../../validator/auth/password';
-import { emailValidator, uniqueEmailValidator } from '../../../validator/auth/email';
-import { minLengthValidator, noWhiteSpaceValidator, uniqueUsernameValidator } from '../../../validator/auth/username';
+import { passwordMatchValidator, passwordValidator } from '../../../validator/auth/password.validator';
+import { emailValidator, uniqueEmailValidator } from '../../../validator/auth/email.validator';
+import { minLengthValidator, noWhiteSpaceValidator, uniqueUsernameValidator } from '../../../validator/auth/username.validator';
 
 @Component({
   selector: 'app-register',

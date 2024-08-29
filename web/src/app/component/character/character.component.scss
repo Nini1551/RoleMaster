@@ -1,19 +1,26 @@
-span {
-  display: inline-block;
-  width: 200px;
+
+.div {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff8e7; /* Off-white with a hint of brown */
+  border: 1px solid #d1bfa7; /* Light brown border */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-button {
-  width: 100px;
-  padding: 10px;
-  background-color: #a67c52; /* Dark brown button */
-  border: none;
-  border-radius: 5px;
-  color: white;
+h1 {
+  display: block;
+  color: #5a3e2b; /* Dark brown text */
   font-weight: bold;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: red; /* Darker brown on hover */
+  font-size: 2.5em;
+  text-align: center;
+  margin: 0 0 5px 0;
 }

@@ -1,19 +1,30 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CharacterService } from '../../service/character.service';
+import { ActivatedRoute } from '@angular/router';
 import { Character } from '../../../type';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-character',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './character.component.html',
   styleUrl: './character.component.scss'
 })
 export class CharacterComponent {
-  @Input() character!: Character;
-  @Output() delete = new EventEmitter<string>();
+  id: string = '0';
+  character: Character = { id: '0', name: 'Loading...' };
 
-  onDelete(): void {
-    this.delete.emit(this.character.id);
+  constructor(private characterService: CharacterService, private route: ActivatedRoute) {
+    this.route.params.subscribe(params => {
+      this.id = params['id'];
+      console.log(this.id);
+    });
+
+    this.characterService.getCharacter(this.id).subscribe({
+      next: (character: Character) => {
+        this.character = character;
+      }
+    });
   }
 }

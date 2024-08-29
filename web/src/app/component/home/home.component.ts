@@ -4,14 +4,14 @@ import { CharacterService } from '../../service/character.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { noWhiteSpaceValidator } from '../../validator/auth/username';
-import { uniqueCharacterNameValidator } from '../../validator/auth/character';
-import { CharacterComponent } from '../character/character.component';
+import { noWhiteSpaceValidator } from '../../validator/auth/username.validator';
+import { uniqueCharacterNameValidator } from '../../validator/auth/character.validator';
+import { CharacterItemComponent } from '../character-item/character-item.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, CharacterComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, CharacterItemComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -78,6 +78,8 @@ export class HomeComponent {
     this.characterService.delete(id).subscribe({
       next: () => {
         this.getCharacters();
+        this.errorMessage = null;
+        this.successMessage = null
       },
       error: (error) => {
         console.error(error);

@@ -21,6 +21,10 @@ export class CharacterService {
     return this.http.get(`${this.baseUrl}/`, { withCredentials: true });
   }
 
+  getCharacter(id: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/${id}`, { withCredentials: true });
+  }
+
   delete(id: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/delete/${id}`, { withCredentials: true });
   }

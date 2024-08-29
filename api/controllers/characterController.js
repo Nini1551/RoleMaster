@@ -42,6 +42,27 @@ const getCharacters = async (req, res) => {
     }
 };
 
+const getCharacter = async (req, res) => {
+    try {
+        const id = parseInt(req.params['id']);
+        const character = await Character.findOne({
+            where: {
+                id
+            },
+            attributes: ['id', 'name']
+        });
+
+        if (character) {
+            return res.status(200).send(character);
+        } else {
+            return res.status(404).send('Character not found');
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send('Internal Serveur Error')
+    }
+};
+
 const deleteCharacter = async (req, res) => {
     try {
       console.log(req.params['id']);
@@ -68,5 +89,6 @@ const deleteCharacter = async (req, res) => {
 module.exports = {
     createCharacter,
     getCharacters,
-    deleteCharacter
+    deleteCharacter,
+    getCharacter
 };

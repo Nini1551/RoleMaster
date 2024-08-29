@@ -47,7 +47,7 @@ export class ProfileComponent  implements OnInit {
     next: (response) => {
       this.username = response.user;
       this.email = response.email;
-      console.log(response.user, 'RESPONSE FROM LOADUSERPROFILE')
+     
     },
     error: (error) => {
       console.error('Error fetching user profile', error);
